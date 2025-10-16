@@ -39,8 +39,18 @@ def main():
     # Otherwise, save and validate the generated policy
     policy_path = save_policy(code, nl_command)
     is_valid = validate(policy_path)
-    # Print ONLY True or False
+    
+    # Print validation result
     print("True --> Would proceed to robot execution" if is_valid else "False --> Code fails validation and will not be executed")
+    
+    # If valid, indicate we would execute
+    if is_valid:
+        print(f"Executing code... (saved to {policy_path})")
+        
+        # TODO: Next week - automatically call execute_policy.py when on Linux
+        # import subprocess
+        # subprocess.run(["python3", "execute_policy.py", str(policy_path)])
+        pass
 
 if __name__ == "__main__":
     main()
