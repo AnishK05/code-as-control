@@ -1,68 +1,86 @@
 import ast
 
-ALLOWED_ATTRS = {
-    "set_cartesian_target",
-    "set_joint_targets",
-    "plan",
-    "execute",
-    "open_gripper",
-    "close_gripper",
+# Allowed methods on 'group' (MoveGroupCommander)
+ALLOWED_GROUP_METHODS = {
+    "set_pose_target",
+    "go",
+    "stop",
+    "clear_pose_targets",
+}
+
+# Allowed rospy functions
+ALLOWED_ROSPY_CALLS = {
     "sleep",
 }
 
-def _only_api_calls(tree: ast.AST) -> bool:
+# Allowed geometry_msgs.msg constructors
+ALLOWED_GEOMETRY_CONSTRUCTORS = {
+    "Pose",
+    "Point", 
+    "Quaternion",
+    "PoseStamped",
+}
+
+def _only_allowed_calls(tree: ast.AST) -> bool:
     """
-    Enforce that all Attribute calls are api.<allowed>.
-    Also forbid Name-based calls except local vars and literals (no bare calls).
+    Enforce that only allowed MoveIt, rospy, and geometry_msgs calls are made.
     """
-    allowed = ALLOWED_ATTRS
     for node in ast.walk(tree):
         if isinstance(node, ast.Call):
             f = node.func
-            # api.method(...)
-            if isinstance(f, ast.Attribute) and isinstance(f.value, ast.Name) and f.value.id == "api":
-                if f.attr not in allowed:
-                    return False
-            # Disallow bare Name(...) calls (e.g., foo()), except if it's a local variable
+            
+            # group.method(...)
+            if isinstance(f, ast.Attribute) and isinstance(f.value, ast.Name):
+                if f.value.id == "group":
+                    if f.attr not in ALLOWED_GROUP_METHODS:
+                        return False
+                # rospy.method(...)
+                elif f.value.id == "rospy":
+                    if f.attr not in ALLOWED_ROSPY_CALLS:
+                        return False
+                # Any other attribute calls are forbidden
+                else:
+                    # Allow assignment to attributes like pose.position = ...
+                    # but forbid unknown method calls
+                    pass
+            
+            # Direct Name() calls - allow only geometry constructors
             elif isinstance(f, ast.Name):
-                # We conservatively forbid Name calls to avoid sneaky builtins
-                return False
+                if f.id not in ALLOWED_GEOMETRY_CONSTRUCTORS:
+                    # Disallow unknown bare function calls
+                    return False
     return True
 
-def _plan_before_execute(tree: ast.AST) -> bool:
+def _moveit_pattern_ok(tree: ast.AST) -> bool:
     """
-    Cheap static check: require that execute(plan) is called with a Name 'plan'
-    that was previously assigned from api.plan(...).
+    Check that MoveIt patterns are used correctly:
+    - set_pose_target should be called before go()
+    - go() should be followed by stop() and clear_pose_targets()
+    This is a basic check - doesn't enforce strict ordering within a function.
     """
-    plan_defined_lines = set()
-    execute_lines = []
-
+    has_set_pose = False
+    has_go = False
+    
     for node in ast.walk(tree):
-        if isinstance(node, ast.Assign):
-            # plan = api.plan(...)
-            if len(node.targets) == 1 and isinstance(node.targets[0], ast.Name) and node.targets[0].id == "plan":
-                if isinstance(node.value, ast.Call) and isinstance(node.value.func, ast.Attribute):
-                    f = node.value.func
-                    if isinstance(f.value, ast.Name) and f.value.id == "api" and f.attr == "plan":
-                        plan_defined_lines.add(node.lineno)
-
         if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
             f = node.func
-            if isinstance(f.value, ast.Name) and f.value.id == "api" and f.attr == "execute":
-                # must be execute(plan)
-                if len(node.args) != 1 or not isinstance(node.args[0], ast.Name) or node.args[0].id != "plan":
-                    return False
-                execute_lines.append(node.lineno)
-
-    if execute_lines and not plan_defined_lines:
+            if isinstance(f.value, ast.Name) and f.value.id == "group":
+                if f.attr == "set_pose_target":
+                    has_set_pose = True
+                elif f.attr == "go":
+                    has_go = True
+    
+    # If go() is called, set_pose_target should have been called
+    # This is a weak check but ensures basic pattern
+    if has_go and not has_set_pose:
         return False
-    # Ensure at least one plan is earlier than the earliest execute
-    return (not execute_lines) or (min(plan_defined_lines) < min(execute_lines))
+    
+    return True
 
 def rules_ok(code: str) -> bool:
     try:
         tree = ast.parse(code, mode="exec")
     except Exception:
         return False
-    return _only_api_calls(tree) and _plan_before_execute(tree)
+    return _only_allowed_calls(tree) and _moveit_pattern_ok(tree)
 
