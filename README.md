@@ -4,10 +4,6 @@
 .\.venv\Scripts\activate
 ```
 
-# Need:
-
-Python 3.13 and Sawyer
-
 # ROS Commands
 
 ## Terminal 1 - Launch MoveIt
@@ -23,6 +19,3 @@ source /home/fri/robot_learning_ws/devel/setup.bash
 cd /home/lebron/code-as-control
 python3 execute_policy.py policies/20251016-163928_wave-to-me.py
 ```
-
-## Prerequisites
-Need sudo to install: `ros-noetic-sawyer-robot ros-noetic-sawyer-moveit`

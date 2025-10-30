@@ -6,7 +6,7 @@ from .prompts import SYSTEM_PROMPT, USER_PROMPT_TEMPLATE
 load_dotenv()
 
 API_KEY = os.getenv("GEMINI_API_KEY")
-MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-pro")
 
 def generate_policy(nl_command: str) -> str:
     """
@@ -36,9 +36,9 @@ def generate_policy(nl_command: str) -> str:
             contents=prompt,
             config={
                 "temperature": 0.2,
-                "max_output_tokens": 512,
+                "max_output_tokens": 2048,
                 "thinking_config": {
-                    "thinking_budget": 0  # Disable thinking to avoid token waste
+                    "thinking_budget": 512  # Disable thinking to avoid token waste
                 }
             }
         )
