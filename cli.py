@@ -16,7 +16,7 @@ def slugify(text: str) -> str:
 
 def save_policy(code: str, command: str) -> Path:
     ts = time.strftime("%Y%m%d-%H%M%S")
-    name = f"{ts}_{slugify(command)}.py"
+    name = f"{ts}.py"
     path = POLICY_DIR / name
     # Force LF endings for portability
     with open(path, "w", encoding="utf-8", newline="\n") as f:
