@@ -1,15 +1,6 @@
 import ast
 
-ALLOWED_ATTRS = {
-    "set_cartesian_target",
-    "set_joint_targets",
-    "plan",
-    "execute",
-    "open_gripper",
-    "close_gripper",
-    "sleep",
-}
-
+# Banned function calls that could be used maliciously
 BANNED_CALL_NAMES = {"print", "open", "input", "exec", "eval", "__import__", "compile"}
 
 # Allowed imports

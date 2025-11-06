@@ -21,6 +21,17 @@ ALLOWED_GEOMETRY_CONSTRUCTORS = {
     "PoseStamped",
 }
 
+# Allowed safe built-in functions
+ALLOWED_BUILTINS = {
+    "range",  # For loops
+    "abs",    # For calculations
+    "min",    # For calculations
+    "max",    # For calculations
+    "len",    # For list/tuple operations
+    "int",    # Type conversions
+    "float",  # Type conversions
+}
+
 def _only_allowed_calls(tree: ast.AST) -> bool:
     """
     Enforce that only allowed MoveIt, rospy, and geometry_msgs calls are made.
@@ -44,9 +55,9 @@ def _only_allowed_calls(tree: ast.AST) -> bool:
                     # but forbid unknown method calls
                     pass
             
-            # Direct Name() calls - allow only geometry constructors
+            # Direct Name() calls - allow geometry constructors and safe builtins
             elif isinstance(f, ast.Name):
-                if f.id not in ALLOWED_GEOMETRY_CONSTRUCTORS:
+                if f.id not in ALLOWED_GEOMETRY_CONSTRUCTORS and f.id not in ALLOWED_BUILTINS:
                     # Disallow unknown bare function calls
                     return False
     return True
