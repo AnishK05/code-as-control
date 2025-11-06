@@ -1,6 +1,7 @@
 import os
 import re
 from typing import List, Dict, Tuple
+from pathlib import Path
 from dotenv import load_dotenv
 from .prompts import SYSTEM_PROMPT, USER_PROMPT_TEMPLATE, ERROR_FIXING_PROMPT
 
@@ -9,12 +10,42 @@ load_dotenv()
 API_KEY = os.getenv("GEMINI_API_KEY")
 MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-pro")
 
-def _call_gemini(messages: List[Dict[str, str]]) -> str:
+# Path to the Sawyer robot initial state image
+GENERATOR_DIR = Path(__file__).parent
+SAWYER_IMAGE_PATH = GENERATOR_DIR / "SawyerInitialState.png"
+
+def _load_sawyer_image():
+    """Load the Sawyer robot image for visual context."""
+    try:
+        from google import genai
+        from google.genai import types
+    except ImportError:
+        return None
+    
+    if not SAWYER_IMAGE_PATH.exists():
+        return None
+    
+    try:
+        # Upload the image to Gemini
+        uploaded_file = genai.upload_file(path=str(SAWYER_IMAGE_PATH))
+        return uploaded_file
+    except Exception:
+        # If upload fails, try reading as bytes
+        try:
+            with open(SAWYER_IMAGE_PATH, 'rb') as f:
+                image_bytes = f.read()
+            return types.Part.from_bytes(data=image_bytes, mime_type='image/png')
+        except Exception:
+            return None
+
+
+def _call_gemini(messages: List[Dict[str, str]], include_image: bool = True) -> str:
     """
     Internal function to call Gemini API with a list of messages.
     
     Args:
         messages: List of message dicts with 'role' and 'content' keys
+        include_image: Whether to include the Sawyer robot image (default True)
         
     Returns:
         The text response from Gemini
@@ -24,6 +55,7 @@ def _call_gemini(messages: List[Dict[str, str]]) -> str:
     
     try:
         from google import genai
+        from google.genai import types
     except ImportError as e:
         raise ImportError(
             "Google GenAI library not found. Install it with: pip install google-generativeai"
@@ -32,15 +64,28 @@ def _call_gemini(messages: List[Dict[str, str]]) -> str:
     # Create client with API key from environment
     client = genai.Client(api_key=API_KEY)
     
+    # Load the Sawyer image for visual context
+    sawyer_image = None
+    if include_image:
+        sawyer_image = _load_sawyer_image()
+    
     # Build contents for multi-turn conversation
-    # First message should include system prompt
+    # First message should include system prompt and optionally the robot image
     contents = []
     for i, msg in enumerate(messages):
         if i == 0 and msg['role'] == 'user':
             # Prepend system prompt to first user message
-            content = SYSTEM_PROMPT + "\n\n" + msg['content']
+            text_content = SYSTEM_PROMPT + "\n\n" + msg['content']
+            
+            # If we have the image, send it with the first message for visual context
+            if sawyer_image is not None:
+                # Create multimodal content with image + text
+                content = [sawyer_image, text_content]
+            else:
+                content = text_content
         else:
             content = msg['content']
+        
         contents.append(content)
     
     try:

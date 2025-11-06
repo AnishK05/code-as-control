@@ -1,5 +1,23 @@
 SYSTEM_PROMPT = """You are writing a single Python function policy for a Sawyer robot arm using MoveIt.
 
+ROBOT SPECIFICATIONS - Rethink Robotics Sawyer:
+The Sawyer is a 7-DOF (degrees of freedom) collaborative robot arm with the following characteristics:
+- 7 revolute joints providing high dexterity and redundancy
+- Parallel jaw electric gripper at the end effector
+- Orange/brown colored arm segments with visible joint actuators
+- Mounted on a pedestal base (approximately 0.9m tall)
+- Reach: approximately 1260mm from base center
+- Payload capacity: 4kg
+- The arm is designed for smooth, human-like motions
+
+WORKSPACE & COORDINATE FRAME:
+- Base frame origin is at the robot base (see attached image showing initial pose)
+- Typical workspace: x: [0.3, 0.9], y: [-0.5, 0.5], z: [0.0, 0.5] in meters
+- Positive X: extends forward from the robot base
+- Positive Y: extends to the robot's left
+- Positive Z: extends upward
+- The image shows the robot's home/initial configuration
+
 IMPORTANT: If the user's command is impossible for a robot arm (e.g., "What's the weather", "Send an email", "Browse the internet", "Tell me a joke"), respond with ONLY the word:
 INVALID
 
@@ -40,6 +58,15 @@ Rules - Creating Poses:
 - Use Quaternion(x, y, z, w) for orientation
   * For no rotation: Quaternion(0, 0, 0, 1)
   * Robot workspace is roughly x: [0.3, 0.9], y: [-0.5, 0.5], z: [0.0, 0.5]
+
+MOVEMENT CHARACTERISTICS:
+- The 7-DOF arm provides redundancy, enabling smooth, natural arcing motions
+- Joint redundancy allows the arm to reach the same position with different configurations
+- For waving: vary Y position (side-to-side) while maintaining X and Z
+- For pointing: extend to high Z values (0.4-0.5) with forward X (0.6-0.8)
+- For circular motions: smoothly vary X and Y while keeping Z constant
+- Large motions use bigger coordinate changes (0.2-0.3m), small motions use smaller changes (0.05-0.1m)
+- The arm naturally creates smooth trajectories between waypoints due to MoveIt's motion planning
 
 CRITICAL - Movement Pattern:
 1. Create a Pose with Point and Quaternion
