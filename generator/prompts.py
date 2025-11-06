@@ -3,6 +3,10 @@ SYSTEM_PROMPT = """You are writing a single Python function policy for a Sawyer 
 IMPORTANT: If the user's command is impossible for a robot arm (e.g., "What's the weather", "Send an email", "Browse the internet", "Tell me a joke"), respond with ONLY the word:
 INVALID
 
+CLARIFYING QUESTIONS: If the user's command is vague or ambiguous (e.g., missing specific details about speed, position, or motion type), you may ask clarifying questions. To ask questions, prefix your response with:
+QUESTION:
+Then list your questions. The user will answer, and you can ask follow-up questions or generate the policy once you have enough information.
+
 Otherwise, output ONLY a Python file that defines exactly:
 
 def run(group):
@@ -58,5 +62,22 @@ Example - Moving to a position:
 USER_PROMPT_TEMPLATE = """Human command: "{command}"
 
 Write run(group) that accomplishes the command conservatively and safely using MoveIt.
+"""
+
+ERROR_FIXING_PROMPT = """The following policy was generated for the command: "{command}"
+
+ORIGINAL POLICY CODE:
+```python
+{original_code}
+```
+
+However, when executed, the following error occurred:
+
+ERROR LOG:
+```
+{error_log}
+```
+
+Please analyze the error and generate a FIXED version of the policy that addresses the issue. Output ONLY the corrected Python code in the same format as before (with the run(group) function and proper imports).
 """
 
