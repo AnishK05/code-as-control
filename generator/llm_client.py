@@ -8,7 +8,9 @@ from .prompts import SYSTEM_PROMPT, USER_PROMPT_TEMPLATE, ERROR_FIXING_PROMPT
 load_dotenv()
 
 API_KEY = os.getenv("GEMINI_API_KEY")
-MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-pro")
+MODEL = os.getenv("GEMINI_MODEL", "gemini-3-pro-preview")
+# Thinking level: "low" (fast, simple tasks) or "high" (deep reasoning, complex tasks)
+THINKING_LEVEL = os.getenv("GEMINI_THINKING_LEVEL", "high")
 
 # Path to the Sawyer robot initial state image
 GENERATOR_DIR = Path(__file__).parent
@@ -89,17 +91,14 @@ def _call_gemini(messages: List[Dict[str, str]], include_image: bool = True) -> 
         contents.append(content)
     
     try:
-        # Call Gemini API using the new SDK
+        # Call Gemini 3 API
+        # Temperature defaults to 1.0 (optimal for Gemini 3 reasoning)
+        # thinking_level: "low" for fast responses, "high" for deep reasoning
+        from google.genai import types
+        
         response = client.models.generate_content(
             model=MODEL,
             contents=contents,
-            config={
-                "temperature": 0.2,
-                "max_output_tokens": 2048,
-                "thinking_config": {
-                    "thinking_budget": 512
-                }
-            }
         )
         
         # Get the text response - try different methods
