@@ -174,3 +174,30 @@ ly, move to a slightly closer position instead.
 ============================================================
 ✓ VALIDATION PASSED
 ============================================================
+
+
+[Selected policy: C:\Users\anish\OneDrive\Documents\VS Code -- Documents\Research_Code_as_Control\code-as-control\policies\12-4-gemini3-c-eight.py]
+
+What was the original command for this policy?
+Original command: trace a figure eight in front of you
+
+------------------------------------------------------------
+Select an error log (optional):
+------------------------------------------------------------
+No error logs found. You can enter a manual path or press Enter to skip.
+Error log path (or Enter to skip):
+
+No error log provided. Please describe the issue with the policy:
+Issue description: make the figure eight much bigger
+
+[Contacting Gemini to fix the policy...]
+
+[Fixed code generated successfully!]
+
+[Fixed policy saved to: C:\Users\anish\OneDrive\Documents\VS Code -- Documents\Research_Code_as_Control\code-as-control\policies\20251204-151832.py]
+
+[Validating fixed policy...]
+
+============================================================
+✓ VALIDATION PASSED
+============================================================
