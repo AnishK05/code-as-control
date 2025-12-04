@@ -1,0 +1,176 @@
+============================================================
+Robot Policy Generation System -- MULTI-GESTURE
+============================================================
+
+
+What would you like to do?
+  1. Generate a new policy
+  2. Edit/fix an existing policy
+
+Enter your choice (1 or 2): 1
+
+------------------------------------------------------------
+Generate New Policy
+------------------------------------------------------------
+
+Enter robot command: wave to me, then give me a high five, then return home
+
+[Code generated successfully!]
+
+[Policy saved to: C:\Users\anish\OneDrive\Documents\VS Code -- Documents\Research_Code_as_Control\code-as-control\policies\20251204-144927.py]
+
+[Validating policy...]
+
+============================================================
+✓ VALIDATION PASSED
+============================================================
+
+
+============================================================
+Robot Policy Generation System -- CIRCLE TASK
+============================================================
+
+What would you like to do?
+  1. Generate a new policy
+  2. Edit/fix an existing policy
+
+Enter your choice (1 or 2): 1
+
+------------------------------------------------------------
+Generate New Policy
+------------------------------------------------------------
+
+Enter robot command: draw a circle in front of you
+
+[Contacting Gemini...]
+
+------------------------------------------------------------
+Gemini has some questions:
+------------------------------------------------------------
+To ensure the robot draws the circle exactly as you intend, I need a few more details:      
+
+1.  **Orientation:** Should the circle be horizontal (like stirring a pot) or vertical (like drawing on a whiteboard/window)?
+2.  **Size:** What is the approximate radius of the circle? (e.g., small like a cup, large like a steering wheel?)
+3.  **Location:** Roughly where should the center of the circle be? (e.g., centered in front at chest height, lower down, or off to one side?)
+4.  **Repetition:** How many times should it draw the circle?
+5.  **Speed:** Should the drawing motion be slow and deliberate or relatively fast?
+
+Your answer: vertical like drawing on a whiteboard, large like a wheel, chest height in fron
+t of you, just draw it once, medium pace and should be smooth
+
+[Contacting Gemini...]
+
+[Code generated successfully!]
+
+[Policy saved to: C:\Users\anish\OneDrive\Documents\VS Code -- Documents\Research_Code_as_Control\code-as-control\policies\20251204-134033.py]
+
+[Validating policy...]
+
+============================================================
+✓ VALIDATION PASSED
+============================================================
+
+
+============================================================
+Robot Policy Generation System -- FIGURE EIGHT
+============================================================
+
+
+What would you like to do?
+  1. Generate a new policy
+  2. Edit/fix an existing policy
+
+Enter your choice (1 or 2): 1
+
+------------------------------------------------------------
+Generate New Policy
+------------------------------------------------------------
+
+Enter robot command: trace a figure-eight pattern in front of you
+
+[Contacting Gemini...]
+
+------------------------------------------------------------
+Gemini has some questions:
+------------------------------------------------------------
+- Should the figure-eight be drawn on a horizontal plane (like on a table) or a vertical plane (in the air like on a whiteboard)?
+- What are the desired width and height dimensions for the figure-eight (e.g., 0.3m wide, 0.2m high)?
+- How many times should the robot repeat the pattern?
+- What is the desired center position for the pattern (x, y, z coordinates)?
+- Should the movement be continuous/smooth or pause at each waypoint?
+
+Your answer: vertical plane (like in the air), you decide the dimensions (be reasonable), repeat 2 times, you decide cent
+er position (think like right in front of you, chest height), continous/smooth movement 
+
+[Contacting Gemini...]
+
+[Code generated successfully!]
+
+[Policy saved to: C:\Users\anish\OneDrive\Documents\VS Code -- Documents\Research_Code_as_Control\code-as-control\policies\20251204-145501.py]
+
+[Validating policy...]
+
+============================================================
+✓ VALIDATION PASSED
+============================================================
+
+
+============================================================
+Robot Policy Generation System -- WAVE
+============================================================
+
+
+What would you like to do?
+  1. Generate a new policy
+  2. Edit/fix an existing policy
+
+Enter your choice (1 or 2): 1
+
+------------------------------------------------------------
+Generate New Policy
+------------------------------------------------------------
+
+Enter robot command: wave to me five times quickly 
+
+[Contacting Gemini...]
+
+[Code generated successfully!]
+
+[Policy saved to: C:\Users\anish\OneDrive\Documents\VS Code -- Documents\Research_Code_as_Control\code-as-control\policies\20251204-145720.py]
+
+[Validating policy...]
+
+============================================================
+✓ VALIDATION PASSED
+============================================================
+
+
+============================================================
+Robot Policy Generation System -- REACH
+============================================================
+
+
+What would you like to do?
+  1. Generate a new policy
+  2. Edit/fix an existing policy
+
+Enter your choice (1 or 2): 1
+
+------------------------------------------------------------
+Generate New Policy
+------------------------------------------------------------
+
+Enter robot command: reach as far forward as you can without hitting anything. if you can't reach the full extension safe
+ly, move to a slightly closer position instead.
+
+[Contacting Gemini...]
+
+[Code generated successfully!]
+
+[Policy saved to: C:\Users\anish\OneDrive\Documents\VS Code -- Documents\Research_Code_as_Control\code-as-control\policies\20251204-150003.py]
+
+[Validating policy...]
+
+============================================================
+✓ VALIDATION PASSED
+============================================================
