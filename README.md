@@ -9,6 +9,10 @@ A novel paradigm where LLMs generate executable Python code directly from natura
 
 Traditional robot interfaces use low-level commands or predefined behaviors. This research explores **executable code as the control interface**: users give natural language commands (e.g., "wave to me"), and the LLM generates safe Python policies that execute directly on a Sawyer robot via ROS/MoveIt.
 
+While past research has explored integrating LLMs with robotic systems, those approaches typically provide direct code blocks or higher-level API abstractions to the LLMs. In contrast, this work embraces a very barebone structure—giving the LLM direct access to low-level primitives and letting it construct policies from the ground up. Think of it as **"Vibecoding for robot arms"**: natural language iteratively refined into executable motion code.
+
+For a detailed understanding of the methodology, results, and insights, please read the [full paper](FinalPaper_CodeAsControl.pdf).
+
 ## Novel Contributions
 
 **1. Code-as-Control Paradigm**  
@@ -46,7 +50,14 @@ def run(group):
 
 ## Running
 
+**Requirements:**
+- Google Gemini API key
+- An environment that supports both Gemini API access and Sawyer robot control (or two separate environments: one for policy generation, one for execution)
+
 ```bash
+# Install dependencies
+pip install -r requirements.txt
+
 # Generate policy
 python cli.py
 
