@@ -75,6 +75,8 @@ The LLM uses Google Gemini, policies execute on a Sawyer 7-DOF robot arm via ROS
 
 ## Citation
 
+If you use this codebase or build on the ideas and methods it introduces, please cite the following paper:
+
 ```bibtex
 @article{kalra2025codeAsControl,
   title={Code as Control: LLM-Generated Robot Policies from Natural Language},
@@ -82,7 +84,8 @@ The LLM uses Google Gemini, policies execute on a Sawyer 7-DOF robot arm via ROS
   year={2025}
 }
 ```
+
 ---
 
-**License:** Free for academic and research use.  
+**License:** This project is licensed free of charge for academic and research use only. Commercial use is not permitted.  
 **Disclaimer:** Use this code with caution, especially when deploying on physical hardware—improper usage or unsafe policies may cause damage.
