@@ -86,6 +86,5 @@ If you use this codebase or build on the ideas and methods it introduces, please
 ```
 
 ---
-
 **License:** This project is licensed free of charge for academic and research use only. Commercial use is not permitted.  
 **Disclaimer:** Use this code with caution, especially when deploying on physical hardware—improper usage or unsafe policies may cause damage.
